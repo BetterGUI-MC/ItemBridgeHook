@@ -2,24 +2,21 @@ package me.hsgamer.bettergui.itembridgehook;
 
 import com.jojodmo.itembridge.ItemBridge;
 import com.jojodmo.itembridge.ItemBridgeKey;
-import me.hsgamer.hscore.bukkit.item.ItemModifier;
-import me.hsgamer.hscore.common.interfaces.StringReplacer;
+import me.hsgamer.hscore.common.StringReplacer;
+import me.hsgamer.hscore.minecraft.item.ItemComparator;
+import me.hsgamer.hscore.minecraft.item.ItemModifier;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
+import java.util.Collection;
 import java.util.UUID;
 
-public class ItemBridgeModifier implements ItemModifier {
+public class ItemBridgeModifier implements ItemModifier<ItemStack>, ItemComparator<ItemStack> {
     private String name = "";
 
     @Override
-    public String getName() {
-        return "item-bridge";
-    }
-
-    @Override
-    public ItemStack modify(ItemStack itemStack, UUID uuid, Map<String, StringReplacer> map) {
-        String replaced = StringReplacer.replace(name, uuid, map.values());
+    public @NotNull ItemStack modify(@NotNull ItemStack itemStack, UUID uuid, @NotNull Collection<StringReplacer> stringReplacers) {
+        String replaced = StringReplacer.replace(name, uuid, stringReplacers);
         ItemStack newItemStack = ItemBridge.getItemStack(replaced);
         return newItemStack == null ? itemStack : newItemStack;
     }
@@ -35,16 +32,19 @@ public class ItemBridgeModifier implements ItemModifier {
     }
 
     @Override
-    public void loadFromItemStack(ItemStack itemStack) {
+    public boolean loadFromItem(ItemStack itemStack) {
         ItemBridgeKey itemBridgeKey = ItemBridge.getItemKey(itemStack);
         if (itemBridgeKey != null) {
             this.name = itemBridgeKey.toString();
+            return true;
+        } else {
+            return false;
         }
     }
 
     @Override
-    public boolean compareWithItemStack(ItemStack itemStack, UUID uuid, Map<String, StringReplacer> map) {
-        String replaced = StringReplacer.replace(name, uuid, map.values());
+    public boolean compare(@NotNull ItemStack itemStack, UUID uuid, @NotNull Collection<StringReplacer> stringReplacers) {
+        String replaced = StringReplacer.replace(name, uuid, stringReplacers);
         ItemBridgeKey itemBridgeKey = ItemBridge.getItemKey(itemStack);
         return itemBridgeKey != null && itemBridgeKey.toString().equals(replaced);
     }
