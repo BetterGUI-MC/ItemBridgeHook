@@ -8,15 +8,14 @@ import me.hsgamer.hscore.minecraft.item.ItemModifier;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.UUID;
 
 public class ItemBridgeModifier implements ItemModifier<ItemStack>, ItemComparator<ItemStack> {
     private String name = "";
 
     @Override
-    public @NotNull ItemStack modify(@NotNull ItemStack itemStack, UUID uuid, @NotNull Collection<StringReplacer> stringReplacers) {
-        String replaced = StringReplacer.replace(name, uuid, stringReplacers);
+    public @NotNull ItemStack modify(@NotNull ItemStack itemStack, UUID uuid, @NotNull StringReplacer stringReplacer) {
+        String replaced = stringReplacer.replaceOrOriginal(name, uuid);
         ItemStack newItemStack = ItemBridge.getItemStack(replaced);
         return newItemStack == null ? itemStack : newItemStack;
     }
@@ -43,8 +42,8 @@ public class ItemBridgeModifier implements ItemModifier<ItemStack>, ItemComparat
     }
 
     @Override
-    public boolean compare(@NotNull ItemStack itemStack, UUID uuid, @NotNull Collection<StringReplacer> stringReplacers) {
-        String replaced = StringReplacer.replace(name, uuid, stringReplacers);
+    public boolean compare(@NotNull ItemStack itemStack, UUID uuid, @NotNull StringReplacer stringReplacer) {
+        String replaced = stringReplacer.replaceOrOriginal(name, uuid);
         ItemBridgeKey itemBridgeKey = ItemBridge.getItemKey(itemStack);
         return itemBridgeKey != null && itemBridgeKey.toString().equals(replaced);
     }
