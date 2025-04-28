@@ -14,6 +14,9 @@ public final class ItemBridgeHook implements Expansion, GetLogger {
     @Override
     public void onEnable() {
         register("ItemBridge", ItemBridgeModifier::new, "item-bridge", "itembridge");
+        register("ItemsAdder", ItemsAdderModifier::new, "itemsadder", "ia");
+        register("Oraxen", OraxenModifier::new, "oraxen");
+        register("Nexo", NexoModifier::new, "nexo");
     }
 
     private void register(String plugin, Supplier<ItemModifier<ItemStack>> creator, String... type) {

@@ -8,7 +8,7 @@ public class ItemBridgeModifier extends CustomItemModifier {
     @Override
     protected String getId(ItemStack itemStack) {
         ItemBridgeKey itemBridgeKey = ItemBridge.getItemKey(itemStack);
-        return itemBridgeKey != null ? itemBridgeKey.toString() : null;
+        return itemBridgeKey == null ? null : itemBridgeKey.toString();
     }
 
     @Override
