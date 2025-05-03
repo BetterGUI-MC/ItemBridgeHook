@@ -21,6 +21,52 @@
     <project.mainClass>me.hsgamer.bettergui.itembridgehook.ItemBridgeHook</project.mainClass>
   </properties>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <relocations>
+                <!-- HSCore -->
+                <relocation>
+                  <pattern>me.hsgamer.hscore</pattern>
+                  <shadedPattern>me.hsgamer.bettergui.lib.core</shadedPattern>
+                </relocation>
+
+                <!-- MineLib -->
+                <relocation>
+                  <pattern>io.github.projectunified.minelib</pattern>
+                  <shadedPattern>me.hsgamer.bettergui.lib.minelib</shadedPattern>
+                </relocation>
+
+                <!-- bStats -->
+                <relocation>
+                  <pattern>org.bstats</pattern>
+                  <shadedPattern>me.hsgamer.bettergui.lib.bstats</shadedPattern>
+                </relocation>
+
+                <!-- UniItem -->
+                <relocation>
+                  <pattern>io.github.projectunified.uniitem</pattern>
+                  <shadedPattern>me.hsgamer.bettergui.itembridgehook.lib.uniitem</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
   <repositories>
     <repository>
       <id>codemc-public</id>
@@ -47,40 +93,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.github.jojodmo</groupId>
-      <artifactId>ItemBridge</artifactId>
-      <version>b0054538c1</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>dev.lone</groupId>
-      <artifactId>api-itemsadder</artifactId>
-      <version>4.0.10</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.th0rgal</groupId>
-      <artifactId>oraxen</artifactId>
-      <version>1.190.0</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>*</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.nexomc</groupId>
-      <artifactId>nexo</artifactId>
+      <groupId>io.github.projectunified</groupId>
+      <artifactId>uni-item-all</artifactId>
       <version>1.1.0</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>*</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
 </project>

@@ -1,5 +1,6 @@
 package me.hsgamer.bettergui.itembridgehook;
 
+import io.github.projectunified.uniitem.api.ItemProvider;
 import me.hsgamer.hscore.common.StringReplacer;
 import me.hsgamer.hscore.minecraft.item.ItemComparator;
 import me.hsgamer.hscore.minecraft.item.ItemModifier;
@@ -8,12 +9,21 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public abstract class CustomItemModifier implements ItemModifier<ItemStack>, ItemComparator<ItemStack> {
+public class CustomItemModifier implements ItemModifier<ItemStack>, ItemComparator<ItemStack> {
+    private final ItemProvider provider;
     private String id = "";
 
-    protected abstract String getId(ItemStack itemStack);
+    public CustomItemModifier(ItemProvider provider) {
+        this.provider = provider;
+    }
 
-    protected abstract ItemStack getItemStack(String id);
+    protected String getId(ItemStack itemStack) {
+        return provider.id(itemStack);
+    }
+
+    protected ItemStack getItemStack(String id) {
+        return provider.item(id);
+    }
 
     @Override
     public @NotNull ItemStack modify(@NotNull ItemStack itemStack, UUID uuid, @NotNull StringReplacer stringReplacer) {
