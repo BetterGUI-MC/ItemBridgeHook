@@ -22,6 +22,7 @@ public final class ItemBridgeHook implements Expansion, GetLogger {
                 type = itemProvider.type();
             }
             ItemModifierBuilder.INSTANCE.register(() -> new CustomItemModifier(itemProvider), type);
+            getLogger().log("Registered item modifier " + itemProvider.getClass().getSimpleName() + " with type " + String.join(", ", type));
         }
         ItemModifierBuilder.INSTANCE.register(() -> new CustomItemModifier(allItemProvider), "uni-item", "uniitem");
     }
