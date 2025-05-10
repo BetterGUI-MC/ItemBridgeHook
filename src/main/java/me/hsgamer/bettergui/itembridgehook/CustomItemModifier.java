@@ -1,7 +1,7 @@
 package me.hsgamer.bettergui.itembridgehook;
 
+import io.github.projectunified.uniitem.all.AllItemProvider;
 import io.github.projectunified.uniitem.api.ItemKey;
-import io.github.projectunified.uniitem.api.ItemProvider;
 import me.hsgamer.hscore.common.StringReplacer;
 import me.hsgamer.hscore.minecraft.item.ItemComparator;
 import me.hsgamer.hscore.minecraft.item.ItemModifier;
@@ -12,10 +12,10 @@ import java.util.UUID;
 
 public class CustomItemModifier implements ItemModifier<ItemStack>, ItemComparator<ItemStack> {
     private final String type;
-    private final ItemProvider provider;
+    private final AllItemProvider provider;
     private String id = "";
 
-    public CustomItemModifier(String type, ItemProvider provider) {
+    public CustomItemModifier(String type, AllItemProvider provider) {
         this.type = type;
         this.provider = provider;
     }

@@ -11,7 +11,7 @@
   </parent>
 
   <artifactId>ItemBridgeHook</artifactId>
-  <version>6.0</version>
+  <version>7.0</version>
   <packaging>jar</packaging>
 
   <name>ItemBridgeHook</name>
@@ -95,7 +95,7 @@
     <dependency>
       <groupId>io.github.projectunified</groupId>
       <artifactId>uni-item-all</artifactId>
-      <version>2.0.0</version>
+      <version>2.1.1</version>
     </dependency>
   </dependencies>
 </project>
