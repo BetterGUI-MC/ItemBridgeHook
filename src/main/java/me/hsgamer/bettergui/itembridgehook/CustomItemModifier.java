@@ -9,21 +9,33 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
+import java.util.function.Function;
 
 public class CustomItemModifier implements ItemModifier<ItemStack>, ItemComparator<ItemStack> {
-    private final String type;
+    private final Function<String, ItemKey> keyFunction;
     private final AllItemProvider provider;
     private String id = "";
 
+    public CustomItemModifier(AllItemProvider provider) {
+        this.keyFunction = ItemKey::fromString;
+        this.provider = provider;
+    }
+
     public CustomItemModifier(String type, AllItemProvider provider) {
-        this.type = type;
+        this.keyFunction = id -> new ItemKey(type, id);
         this.provider = provider;
     }
 
     @Override
     public @NotNull ItemStack modify(@NotNull ItemStack itemStack, UUID uuid, @NotNull StringReplacer stringReplacer) {
         String replaced = stringReplacer.replaceOrOriginal(id, uuid);
-        ItemStack newItemStack = provider.item(new ItemKey(type, replaced));
+        ItemKey itemKey;
+        try {
+            itemKey = keyFunction.apply(replaced);
+        } catch (Throwable throwable) {
+            return itemStack;
+        }
+        ItemStack newItemStack = provider.item(itemKey);
         return newItemStack == null ? itemStack : newItemStack;
     }
 
@@ -51,6 +63,12 @@ public class CustomItemModifier implements ItemModifier<ItemStack>, ItemComparat
     @Override
     public boolean compare(@NotNull ItemStack itemStack, UUID uuid, @NotNull StringReplacer stringReplacer) {
         String replaced = stringReplacer.replaceOrOriginal(id, uuid);
-        return provider.isSimilar(itemStack, new ItemKey(type, replaced));
+        ItemKey itemKey;
+        try {
+            itemKey = keyFunction.apply(replaced);
+        } catch (Throwable throwable) {
+            return false;
+        }
+        return provider.isSimilar(itemStack, itemKey);
     }
 }

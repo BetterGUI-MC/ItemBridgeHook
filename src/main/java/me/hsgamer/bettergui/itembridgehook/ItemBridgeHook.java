@@ -9,13 +9,10 @@ public final class ItemBridgeHook implements Expansion, GetLogger {
     @Override
     public void onEnable() {
         AllItemProvider allItemProvider = new AllItemProvider();
-        for (String type : allItemProvider.getTypes()) {
+        for (String type : allItemProvider.availableTypes()) {
             ItemModifierBuilder.INSTANCE.register(() -> new CustomItemModifier(type, allItemProvider), type);
             getLogger().log("Registered item modifier for type " + type);
         }
-        for (String alias : allItemProvider.getAliases()) {
-            ItemModifierBuilder.INSTANCE.register(() -> new CustomItemModifier(alias, allItemProvider), alias);
-            getLogger().log("Registered item modifier for alias " + alias);
-        }
+        ItemModifierBuilder.INSTANCE.register(() -> new CustomItemModifier(allItemProvider), "uniitem", "uni-item");
     }
 }
